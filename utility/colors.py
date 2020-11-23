@@ -1,8 +1,29 @@
 import matplotlib.colors as mc
 import colorsys
 
+color_wheel = {0:  "#000000",
+               1:  "#2080ff",
+               2:  "#40c040",
+               3:  "#c00000",
+               4:  "#ff8000",
+               5:  "#40c0ff",
+               6:  "#20ff80",
+               7:  "#ff4040",
+               8:  "#8040ff",
+               9:  "#c0ff40",
+               10: "#202080"}
 
-colors = ['#1e90ff', '#ff0000', '#32cd32', '#ff8c00', '#8a2be2']
+color_names = {0: "black",
+               1: "blue",
+               2: "green",
+               3: "red",
+               4: "orange",
+               5: "light blue",
+               6: "light green",
+               7: "light red",
+               8: "violet",
+               9: "lime",
+               10: "purple"}
 
 
 def lighten_color(color, amount=0.5):

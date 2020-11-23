@@ -2,16 +2,18 @@ import ctypes
 import os
 from PyQt5 import QtWidgets, QtGui
 
-from user_interfaces.table_widget import TableWidget
+from user_interfaces.merge_pv_widget import MergePVWindow
+from user_interfaces.process_pv_widget import ProcessPVWindow
 from utility import config
 
 
+# noinspection PyAttributeOutsideInit
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
 
-        myappid = 'ItMakesCoffee'  # arbitrary string
+        myappid = 'Lambda DA'  # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
         config.read_config()
@@ -21,24 +23,41 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon(os.path.join(config.paths['icons'], 'lambda_da.png')))
         self.setWindowTitle("%s %s" % (config.global_confs['progname'], config.global_confs['progversion']))
 
-        self.table_widget = TableWidget(self)  # create multiple document interface widget
-        self.setCentralWidget(self.table_widget)
+        self.mdi = QtWidgets.QMdiArea()  # create multiple document interface widget
+        self.setCentralWidget(self.mdi)
         self.showMaximized()
+
+        # Menu Bar
+        spectral_menu = self.menuBar().addMenu('Spectroscopy')
+        spectral_menu.addAction('Load Data')
+        spectral_menu.addAction('Process Data')
+        spectral_menu.addAction('Merge Results')
+        spectral_menu.addAction('Explore')
+
+        pv_menu = self.menuBar().addMenu('PV Measurements')
+        pv_menu.addAction('Reference Analysis')
+        pv_process = QtWidgets.QAction('Process Data', self)
+        pv_process.triggered.connect(self.process_pv)
+        pv_menu.addAction(pv_process)
+        pv_merge = QtWidgets.QAction('Merge Results', self)
+        pv_merge.triggered.connect(self.merge_pv)
+        pv_menu.addAction(pv_merge)
+        pv_menu.addAction('Explore')
+
+        microscope_menu = self.menuBar().addMenu('Microscopy')
+        microscope_menu.addAction('Load Images')
+
+    def process_pv(self):
+        process_pv_widget = ProcessPVWindow(self)
+        self.mdi.addSubWindow(process_pv_widget)
+        process_pv_widget.show()
+
+    def merge_pv(self):
+        merge_pv_widget = MergePVWindow(self)
+        self.mdi.addSubWindow(merge_pv_widget)
+        merge_pv_widget.show()
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
 
-        # Disconnect sensor before shutdown
-        self.table_widget.tab_experiment.stop_sensor()
-
-        # Save newly created experiment analyses
-        for experiment in self.table_widget.tab_analysis.experiment_dict.values():
-            experiment.save_pickle()
-
-        # Update config ini with current paths
-        config.write_config(save_path=str(self.table_widget.tab_experiment.directory),
-                            plot_path=str(self.table_widget.tab_analysis.plot_directory),
-                            analysis_path=str(self.table_widget.tab_analysis.analysis_directory),
-                            export_path=str(self.table_widget.tab_analysis.export_directory),
-                            arduino=str(self.table_widget.tab_experiment.sensor_cb.currentText()),
-                            keithley=str(self.table_widget.tab_experiment.source_cb.currentText()))
+        config.write_config()
