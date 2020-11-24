@@ -17,6 +17,7 @@ paths = {'icons': os.path.join(PROJECT_PATH, 'icons'),
          'last_import': PROJECT_PATH,
          'last_export': PROJECT_PATH,
          'film_db': PROJECT_PATH,
+         'pv_improve_file': PROJECT_PATH,
          'pv_explore_in': PROJECT_PATH,
          'pv_explore_out': PROJECT_PATH}
 
@@ -50,6 +51,7 @@ def write_config():
                        'last_import': paths['last_import'],
                        'last_export': paths['last_export'],
                        'film_db': paths['film_db'],
+                       'pv_improve_file': paths['pv_improve_file'],
                        'pv_explore_in': paths['pv_explore_in'],
                        'pv_explore_out': paths['pv_explore_out']
                        }

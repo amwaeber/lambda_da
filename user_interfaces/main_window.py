@@ -2,6 +2,7 @@ import ctypes
 import os
 from PyQt5 import QtWidgets, QtGui
 
+from user_interfaces.change_pv_widget import ChangePVWindow
 from user_interfaces.explore_pv_widget import ExplorePVWindow
 from user_interfaces.merge_pv_widget import MergePVWindow
 from user_interfaces.process_pv_widget import ProcessPVWindow
@@ -42,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         pv_merge = QtWidgets.QAction('Merge Results', self)
         pv_merge.triggered.connect(self.merge_pv)
         pv_menu.addAction(pv_merge)
+        pv_change = QtWidgets.QAction('PCE Improvements', self)
+        pv_change.triggered.connect(self.change_pv)
+        pv_menu.addAction(pv_change)
         pv_explore = QtWidgets.QAction('Explore', self)
         pv_explore.triggered.connect(self.explore_pv)
         pv_menu.addAction(pv_explore)
@@ -58,6 +62,11 @@ class MainWindow(QtWidgets.QMainWindow):
         merge_pv_widget = MergePVWindow(self)
         self.mdi.addSubWindow(merge_pv_widget)
         merge_pv_widget.show()
+
+    def change_pv(self):
+        change_pv_widget = ChangePVWindow(self)
+        self.mdi.addSubWindow(change_pv_widget)
+        change_pv_widget.show()
 
     def explore_pv(self):
         explore_pv_widget = ExplorePVWindow(self)

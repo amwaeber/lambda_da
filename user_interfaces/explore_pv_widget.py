@@ -122,6 +122,8 @@ class ExplorePVWidget(QtWidgets.QWidget):
         yaxis_combobox.addItem("voc")
         yaxis_combobox.addItem("pmax_eff")
         yaxis_combobox.addItem("isc_eff")
+        yaxis_combobox.addItem("pmax_impr")
+        yaxis_combobox.addItem("isc_impr")
         hbox_xy.addWidget(yaxis_combobox)
         hbox_xy.addStretch(-1)
         vbox.addLayout(hbox_xy)

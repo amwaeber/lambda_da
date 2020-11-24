@@ -62,3 +62,14 @@ def calc_efficiency(name, overwrite=False):
         glob.df['disc_eff'] = (upper - lower) / 2
         print('d')
         glob.df.to_excel(os.path.join(paths['last_export'], 'IV_Summary_Efficiency.xlsx'))
+
+
+def pce_vs_reference(groups, xaxis):
+    for group_id in groups:
+        mask_group = glob.df['group'] == group_id
+        for i, key in enumerate(['isc_eff', 'pmax_eff']):
+            glob.df.loc[mask_group, [f"{key[:-3]}impr"]] = glob.df[mask_group][key] - \
+                                            (glob.irrad_fit_pars[i][0] * glob.df[mask_group][xaxis] +
+                                             glob.irrad_fit_pars[i][1])
+            glob.df.loc[mask_group, [f"d{key[:-3]}impr"]] = glob.df[mask_group][f"d{key}"]
+    glob.df.to_excel(paths['pv_improve_file'])

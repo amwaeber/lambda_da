@@ -47,3 +47,19 @@ def iv_irradiance_correction(channel, one_sun, overwrite):
         glob.df.loc[:, ['pmax_fit']] = glob.df['pmax_fit'] + (glob.irrad_fit_pars[2][0] if glob.irrad_fit_pars[2][0] > 0
                                                               else 0) * (one_sun - glob.df[f'irrad{channel}'])
         glob.df.to_excel(os.path.join(paths['last_export'], 'IV_Summary_TI_corr.xlsx'))
+
+
+def reference_fit(groups, xaxis):
+    mask_mx = glob.df['group'].isin(groups)
+    df_fit = glob.df[mask_mx].sort_values(by=xaxis)
+    glob.irrad_fit_pars = list()
+    y_pred = list()
+    for key in ['isc_eff', 'pmax_eff']:
+        x = df_fit[xaxis].values.reshape(-1, 1)  # values converts it into a numpy array
+        y = df_fit[key].values.reshape(-1, 1)  # values converts it into a numpy array
+        yerr = df_fit[f"d{key}"].values.reshape(-1, 1).flatten()  # values converts it into a numpy array
+        lin_reg = LinearRegression()  # create object for the class
+        lin_reg.fit(x, y, sample_weight=1/yerr)  # perform linear regression
+        y_pred.append(lin_reg.predict(x))
+        glob.irrad_fit_pars.append([lin_reg.coef_[0, 0], lin_reg.intercept_[0]])
+    return y_pred
