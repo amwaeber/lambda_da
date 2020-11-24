@@ -2,6 +2,7 @@ import ctypes
 import os
 from PyQt5 import QtWidgets, QtGui
 
+from user_interfaces.explore_pv_widget import ExplorePVWindow
 from user_interfaces.merge_pv_widget import MergePVWindow
 from user_interfaces.process_pv_widget import ProcessPVWindow
 from utility import config
@@ -15,7 +16,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         myappid = 'Lambda DA'  # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-
         config.read_config()
         self.init_ui()
 
@@ -42,7 +42,9 @@ class MainWindow(QtWidgets.QMainWindow):
         pv_merge = QtWidgets.QAction('Merge Results', self)
         pv_merge.triggered.connect(self.merge_pv)
         pv_menu.addAction(pv_merge)
-        pv_menu.addAction('Explore')
+        pv_explore = QtWidgets.QAction('Explore', self)
+        pv_explore.triggered.connect(self.explore_pv)
+        pv_menu.addAction(pv_explore)
 
         microscope_menu = self.menuBar().addMenu('Microscopy')
         microscope_menu.addAction('Load Images')
@@ -56,6 +58,11 @@ class MainWindow(QtWidgets.QMainWindow):
         merge_pv_widget = MergePVWindow(self)
         self.mdi.addSubWindow(merge_pv_widget)
         merge_pv_widget.show()
+
+    def explore_pv(self):
+        explore_pv_widget = ExplorePVWindow(self)
+        self.mdi.addSubWindow(explore_pv_widget)
+        explore_pv_widget.show()
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)

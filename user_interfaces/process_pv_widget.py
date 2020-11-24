@@ -7,7 +7,7 @@ import seaborn as sns
 
 from user_interfaces.widgets.separator import Separator
 from utility.colors import color_wheel
-from utility.config import paths, defaults
+from utility.config import paths, defaults, write_config
 from utility.corrections import iv_temperature_correction, iv_irradiance_fit, iv_irradiance_correction
 from utility.dataframe_edit import drop_experiments, select_experiment_range, merge_film_db
 from utility.dataframe_info import df_info
@@ -28,6 +28,11 @@ class ProcessPVWindow(QtWidgets.QMdiSubWindow):
         self.setWidget(self.Widget)
         self.setWindowTitle("Process PV Data")
         self.setObjectName('PROC_PV')
+
+    def closeEvent(self, *args, **kwargs):
+        super(QtWidgets.QMdiSubWindow, self).closeEvent(*args, **kwargs)
+
+        write_config()
 
 
 # noinspection PyAttributeOutsideInit

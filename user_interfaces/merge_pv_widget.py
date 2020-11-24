@@ -84,9 +84,7 @@ class MergePVWidget(QtWidgets.QWidget):
         merge_button.clicked.connect(self.merge_data)
         hbox_merge.addStretch(-1)
         vbox.addLayout(hbox_merge)
-
         vbox.addStretch(-1)
-
         self.setLayout(vbox)
 
     def folder_dialog(self):

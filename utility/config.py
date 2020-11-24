@@ -3,7 +3,6 @@ import os
 from configparser import ConfigParser
 
 from utility._version import __version__
-# from utility.save_info import info_defaults
 
 PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
 
@@ -17,10 +16,9 @@ defaults = {'process_pv': [False, 'PV masked', False, 2, 515, False, False, 'PV 
 paths = {'icons': os.path.join(PROJECT_PATH, 'icons'),
          'last_import': PROJECT_PATH,
          'last_export': PROJECT_PATH,
-         'film_db': PROJECT_PATH}
-
-ports = {'arduino': 'dummy',
-         'keithley': 'dummy'}
+         'film_db': PROJECT_PATH,
+         'pv_explore_in': PROJECT_PATH,
+         'pv_explore_out': PROJECT_PATH}
 
 
 def read_config():
@@ -35,11 +33,8 @@ def read_config():
     for key in config['paths']:
         paths[key] = str(config['paths'][key])
 
-    for key in config['ports']:
-        ports[key] = str(config['ports'][key])
 
-
-def write_config(**kwargs):
+def write_config():
     config_path = os.path.join(PROJECT_PATH, 'config.ini')
 
     config = ConfigParser()
@@ -52,13 +47,11 @@ def write_config(**kwargs):
     #                       'iv': defaults['iv']}
 
     config['paths'] = {'icons': os.path.join(PROJECT_PATH, 'icons'),
-                       'last_import': kwargs.get('import_path', paths['last_import']),
-                       'last_export': kwargs.get('export_path', paths['last_export']),
-                       'film_db': kwargs.get('film_db_path', paths['film_db'])
-                       }
-
-    config['ports'] = {'arduino': kwargs.get('arduino', ports['arduino']),
-                       'keithley': kwargs.get('keithley', ports['keithley'])
+                       'last_import': paths['last_import'],
+                       'last_export': paths['last_export'],
+                       'film_db': paths['film_db'],
+                       'pv_explore_in': paths['pv_explore_in'],
+                       'pv_explore_out': paths['pv_explore_out']
                        }
 
     with open(config_path, 'w') as f:

@@ -31,3 +31,7 @@ def load_experiments(path, overwrite=True):
 
 def load_film_database():
     return pd.read_excel(paths['film_db'])
+
+
+def load_global_df(path):
+    glob.df = pd.read_excel(path, index_col=0)
