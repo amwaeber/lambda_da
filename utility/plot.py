@@ -11,7 +11,6 @@ sns.set()
 
 
 def plot_ty(name, yaxis_name):
-    print('b')
     mask = glob.df['name'] == name
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.plot(glob.df[mask]['datetime'], glob.df[mask][yaxis_name], color=color_wheel[1], lw=2)

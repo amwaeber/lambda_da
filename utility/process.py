@@ -47,20 +47,16 @@ def calc_efficiency(name, overwrite=False):
     else:
         if os.path.exists(os.path.join(paths['last_export'], 'IV_Summary_Efficiency.xlsx')):
             os.remove(os.path.join(paths['last_export'], 'IV_Summary_Efficiency.xlsx'))
-        print('a')
         dut_pmax, dut_dpmax = glob.df[glob.df['name'] == name][['pmax', 'dpmax']].values[0]
-        print('b')
         upper = ((glob.df['pmax'] + glob.df['dpmax']) / (dut_pmax - dut_dpmax) - 1) * 100
         lower = ((glob.df['pmax'] - glob.df['dpmax']) / (dut_pmax + dut_dpmax) - 1) * 100
         glob.df['pmax_eff'] = (upper + lower) / 2
         glob.df['dpmax_eff'] = (upper - lower) / 2
-        print('c')
         dut_isc, dut_disc = glob.df[glob.df['name'] == name][['isc', 'disc']].values[0]
         upper = ((glob.df['isc'] + glob.df['disc']) / (dut_isc - dut_disc) - 1) * 100
         lower = ((glob.df['isc'] - glob.df['disc']) / (dut_isc + dut_disc) - 1) * 100
         glob.df['isc_eff'] = (upper + lower) / 2
         glob.df['disc_eff'] = (upper - lower) / 2
-        print('d')
         glob.df.to_excel(os.path.join(paths['last_export'], 'IV_Summary_Efficiency.xlsx'))
 
 
