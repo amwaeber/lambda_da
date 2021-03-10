@@ -58,7 +58,7 @@ class ExplorePVWidget(QtWidgets.QWidget):
         file_button.clicked.connect(self.file_dialog)
         file_button.setToolTip('Choose processed data file')
         hbox_load.addWidget(file_button)
-        self.file_edit = QtWidgets.QLineEdit(paths['pv_explore_in'], self)
+        self.file_edit = QtWidgets.QLineEdit(paths['pv_explore'], self)
         self.file_edit.setMinimumWidth(180)
         self.file_edit.setDisabled(True)
         hbox_load.addWidget(self.file_edit)
@@ -67,19 +67,6 @@ class ExplorePVWidget(QtWidgets.QWidget):
         load_button.clicked.connect(self.load_data)
         hbox_load.addStretch(-1)
         vbox.addLayout(hbox_load)
-        hbox_save = QtWidgets.QHBoxLayout()
-        hbox_save.addWidget(QtWidgets.QLabel("Results folder", self))
-        folder_button = QtWidgets.QPushButton(
-            QtGui.QIcon(os.path.join(paths['icons'], 'folder.png')), '')
-        folder_button.clicked.connect(self.folder_dialog)
-        folder_button.setToolTip('Choose folder for results')
-        hbox_save.addWidget(folder_button)
-        self.folder_edit = QtWidgets.QLineEdit(paths['pv_explore_out'], self)
-        self.folder_edit.setMinimumWidth(180)
-        self.folder_edit.setDisabled(True)
-        hbox_save.addWidget(self.folder_edit)
-        hbox_save.addStretch(-1)
-        vbox.addLayout(hbox_save)
         hbox_fname = QtWidgets.QHBoxLayout()
         hbox_fname.addWidget(QtWidgets.QLabel("Save file name", self))
         self.fname_edit = QtWidgets.QLineEdit('Graph', self)
@@ -205,20 +192,15 @@ class ExplorePVWidget(QtWidgets.QWidget):
         self.setLayout(hbox)
 
     def file_dialog(self):
-        paths['pv_explore_in'] = str(QtWidgets.QFileDialog.getOpenFileName(self, 'Select Data',
-                                                                           paths['pv_explore_in'])[0])
-        self.file_edit.setText(paths['pv_explore_in'])
-
-    def folder_dialog(self):
-        paths['pv_explore_out'] = str(QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Directory',
-                                                                                 paths['pv_explore_out']))
-        self.folder_edit.setText(paths['pv_explore_out'])
+        paths['pv_explore'] = str(QtWidgets.QFileDialog.getOpenFileName(self, 'Select Data',
+                                                                        paths['pv_explore'])[0])
+        self.file_edit.setText(paths['pv_explore'])
 
     def save_image(self):
-        path = os.path.join(paths['pv_explore_out'], f'{self.fname_edit.text()}.png')
+        path = os.path.join(os.path.dirname(paths['pv_explore']), f'{self.fname_edit.text()}.png')
         i = 1
         while os.path.isfile(path):
-            path = os.path.join(paths['pv_explore_out'], f'{self.fname_edit.text()}({i}).png')
+            path = os.path.join(os.path.dirname(paths['pv_explore']), f'{self.fname_edit.text()}({i}).png')
             i += 1
         self.plot_canvas.figure.savefig(path)
 
@@ -227,7 +209,7 @@ class ExplorePVWidget(QtWidgets.QWidget):
         QtWidgets.QApplication.clipboard().setPixmap(pixmap)
 
     def load_data(self):
-        load_global_df(paths['pv_explore_in'])
+        load_global_df(paths['pv_explore'])
         self.update_groups()
 
     def update_groups(self):

@@ -93,7 +93,7 @@ class ChangePVWidget(QtWidgets.QWidget):
         vbox.addLayout(hbox_plot)
 
         vbox.addWidget(Separator())
-        vbox.addWidget(QtWidgets.QLabel("3. Specify the groups that are to be analysed against the fitted baseline."
+        vbox.addWidget(QtWidgets.QLabel("3. Specify the groups that are to be analysed against the fitted baseline. "
                                         "Separate group indices with commas.", self))
         hbox_corr = QtWidgets.QHBoxLayout()
         hbox_corr.addWidget(QtWidgets.QLabel("Film groups", self))

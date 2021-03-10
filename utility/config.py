@@ -18,8 +18,7 @@ paths = {'icons': os.path.join(PROJECT_PATH, 'icons'),
          'last_export': PROJECT_PATH,
          'film_db': PROJECT_PATH,
          'pv_improve_file': PROJECT_PATH,
-         'pv_explore_in': PROJECT_PATH,
-         'pv_explore_out': PROJECT_PATH}
+         'pv_explore': PROJECT_PATH}
 
 
 def read_config():
@@ -52,8 +51,7 @@ def write_config():
                        'last_export': paths['last_export'],
                        'film_db': paths['film_db'],
                        'pv_improve_file': paths['pv_improve_file'],
-                       'pv_explore_in': paths['pv_explore_in'],
-                       'pv_explore_out': paths['pv_explore_out']
+                       'pv_explore': paths['pv_explore']
                        }
 
     with open(config_path, 'w') as f:

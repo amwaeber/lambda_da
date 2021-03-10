@@ -484,7 +484,6 @@ class ProcessPVWidget(QtWidgets.QWidget):
     def show_irrad_data(self, baseline, channel):
         defaults['process_pv'][1] = baseline
         defaults['process_pv'][3] = channel
-
         y_pred = iv_irradiance_fit(baseline, channel)
         mask = glob.df['name'] == baseline
 
